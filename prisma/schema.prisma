@@ -18,8 +18,8 @@ model User {
   email   String @unique
   password  String
   role String
-  // branch_id String
-  // branch Branch @relation(fields: [branch_id], references: [id])
+  branch_id String? 
+  branch Branch? @relation(fields: [branch_id], references: [id])
   tickets Ticket[]
 
   @@map("users")
@@ -27,7 +27,7 @@ model User {
 
 model Branch {
   id String @id @default(uuid())
-  // users User[]
+  users User[]
   name String
 
   @@map("branches")
