@@ -1,12 +1,14 @@
 import { User } from "@prisma/client";
 import { hash } from "bcrypt";
-import prisma from "../../../database/prismaClient";
-import { CreateUserDTO } from "./CreateUserDTO";
+import prisma from "../../../database/prisma";
 
-enum UserRoles {
-  admin = "admin",
-  service = "service",
-  user = "user",
+interface CreateUserDTO {
+  id?: string;
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+  branch_id: string;
 }
 
 class CreateUserService {
@@ -14,7 +16,6 @@ class CreateUserService {
     email,
     name,
     branch_id,
-    role = UserRoles.user,
     username,
     password,
   }: CreateUserDTO): Promise<User> {
@@ -28,7 +29,6 @@ class CreateUserService {
         email,
         name,
         password: await hash(password, 8),
-        role,
         username,
       },
     });

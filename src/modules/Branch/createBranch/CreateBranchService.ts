@@ -1,5 +1,5 @@
 import { Branch } from "@prisma/client";
-import prisma from "../../../database/prismaClient";
+import prisma from "../../../database/prisma";
 
 interface ICreateBranchDTO {
   name: string;
