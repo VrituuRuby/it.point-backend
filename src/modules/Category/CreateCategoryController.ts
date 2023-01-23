@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import { z } from "zod";
+import { AppError } from "../../config/AppError";
 import { CreateCategoryService } from "./CreateCategoryService";
 
 class CreateCategoryController {
@@ -13,7 +14,6 @@ class CreateCategoryController {
         })
         .array(),
     });
-
     const { name, subcategories } = getRequestData.parse(req.body);
 
     const createCategoryService = new CreateCategoryService();

@@ -17,6 +17,9 @@ class CreateCategoryService {
           create: subcategories.map((sub) => ({ name: sub.name })),
         },
       },
+      include: {
+        subcategories: true,
+      },
     });
 
     return category;
