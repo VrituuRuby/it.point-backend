@@ -1,4 +1,3 @@
-import { AppError } from "./config/AppError";
 import express from "express";
 import "express-async-errors";
 

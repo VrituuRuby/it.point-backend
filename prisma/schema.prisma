@@ -14,6 +14,7 @@ enum Status {
   OPEN
   IN_PROGRESS
   CLOSED
+  PENDING
 }
 
 enum Role {
@@ -45,8 +46,8 @@ model Branch {
 }
 
 model Ticket {
-  id             String      @id @default(uuid())
-  status         Status
+  id             Int         @id @default(autoincrement())
+  status         Status      @default(OPEN)
   user           User        @relation(fields: [user_id], references: [id])
   user_id        String
   title          String
@@ -56,6 +57,8 @@ model Ticket {
   category_id    String
   subcategory    SubCategory @relation(fields: [subcategory_id], references: [id])
   subcategory_id String
+  created_at     DateTime    @default(now())
+  updated_at     DateTime?
 
   @@map("tickets")
 }
