@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:docker@localhost:5432/database"
+  url      = "postgresql://postgres:docker@it.point-database:5432/it.point"
 }
 
 enum Status {

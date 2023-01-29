@@ -1,0 +1,33 @@
+version: '3.9'
+
+networks:
+  it.point:
+    driver: bridge
+
+services:
+  database:
+    container_name: it.point-database
+    image: postgres
+    environment:
+      POSTGRES_DB: "it.point"
+      POSTGRES_PASSWORD: "docker"
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/app
+    working_dir: /app
+    networks:
+      - it.point
+  main:
+    container_name: it.point-backend
+    image: node:17.5.0-alpine
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: npm run dev
+    ports:
+      - "3333:3333"
+    networks:
+      - it.point
