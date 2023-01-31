@@ -8,7 +8,16 @@ interface CreateUserDTO {
   username: string;
   password: string;
   email: string;
-  branch_id: string;
+  branch_id?: string;
+}
+
+interface Response{
+  id: string,
+  name: string,
+  username: string,
+  email: string,
+  role: string,
+  branch_id: string | null,
 }
 
 class CreateUserService {
@@ -18,7 +27,7 @@ class CreateUserService {
     branch_id,
     username,
     password,
-  }: CreateUserDTO): Promise<User> {
+  }: CreateUserDTO): Promise<Response> {
     const userExists = await prisma.user.findUnique({ where: { email } });
 
     if (userExists) throw new Error("Email is already registered");
@@ -33,7 +42,14 @@ class CreateUserService {
       },
     });
 
-    return user;
+    return {
+      branch_id: user.branch_id,
+      username: user.username,
+      email: user.email,
+      id: user.id,
+      name: user.name,
+      role: user.role,
+    };
   }
 }
 
