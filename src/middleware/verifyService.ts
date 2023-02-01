@@ -1,4 +1,4 @@
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppError } from "../config/AppError";
 
 export async function verifyService(
