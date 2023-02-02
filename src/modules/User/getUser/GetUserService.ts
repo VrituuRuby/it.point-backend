@@ -1,4 +1,3 @@
-import { User } from "@prisma/client";
 import { AppError } from "../../../config/AppError";
 import prisma from "../../../database/prisma";
 

@@ -1,5 +1,5 @@
 import { Category } from "@prisma/client";
-import prisma from "../../database/prisma";
+import prisma from "../../../database/prisma";
 
 interface ICreateCategory {
   name: string;

@@ -9,7 +9,7 @@ class AuthenticateUserController {
       password: z.string(),
     });
 
-    const { password, username } = getReqData.parse(req.body);
+    const { username, password } = getReqData.parse(req.body);
 
     const authenticateUserService = new AuthenticateUserService();
 

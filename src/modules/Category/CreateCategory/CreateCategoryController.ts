@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 
 import { z } from "zod";
-import { AppError } from "../../config/AppError";
 import { CreateCategoryService } from "./CreateCategoryService";
 
 class CreateCategoryController {
