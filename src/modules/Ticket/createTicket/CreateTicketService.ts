@@ -1,5 +1,6 @@
 import { Ticket } from "@prisma/client";
-import prisma from "../../database/prisma";
+import dayjs from "dayjs";
+import prisma from "../../../database/prisma";
 
 interface CreateTicketDTO {
   id?: string;
