@@ -8,7 +8,7 @@ export async function verifyService(
 ) {
   const { role } = req.user;
 
-  if (role !== "SERVICE") throw new AppError("User isn't a member of SERVICE");
+  if (role === "SERVICE" || role === "ADMIN") next();
 
-  next();
+  throw new AppError("User isn't allowed");
 }
