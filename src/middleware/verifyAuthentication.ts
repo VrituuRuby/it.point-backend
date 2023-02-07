@@ -18,7 +18,6 @@ export async function verifyAuthentication(
   if (!authHeader) throw new AppError("Token is missing");
 
   const [, token] = authHeader.split(" ");
-  console.log(token);
 
   try {
     const { sub: user_id } = (await verify(token, auth.JWT_SECRET)) as IPayLoad;

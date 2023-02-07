@@ -7,7 +7,7 @@ import { usersRoutes } from "./users.routes";
 
 const routes = Router();
 
-routes.use("/user", usersRoutes);
+routes.use("/users", usersRoutes);
 routes.use("/branches", branchesRoutes);
 routes.use("/categories", categoriesRoutes);
 routes.use("/tickets", ticketsRoutes);

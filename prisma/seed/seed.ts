@@ -1,6 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { hash } from "bcrypt";
-import { Category, PrismaClient, SubCategory, User } from "@prisma/client";
+import {
+  Branch,
+  Category,
+  PrismaClient,
+  SubCategory,
+  User,
+} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -46,6 +52,7 @@ const categories = [
 
 const categories_id: (Category & { subcategories: SubCategory[] })[] = [];
 const users_id: string[] = [];
+const branches_id: Branch[] = [];
 
 async function createCategories() {
   await Promise.all(
@@ -75,18 +82,38 @@ async function createTickets(quantity: number) {
     );
     const user_index = Math.floor(Math.random() * users_id.length);
 
+    const random_category = categories_id[category_index];
+    const random_category_id = random_category.id;
+    const random_subcategory_id =
+      random_category.subcategories[subcategory_index].id;
+
     await prisma.ticket.create({
       data: {
         description: faker.lorem.paragraphs(),
         phone: faker.phone.number(),
         title: faker.hacker.phrase(),
-        category_id: categories_id[category_index].id,
-        subcategory_id:
-          categories_id[category_index].subcategories[subcategory_index].id,
+        category_id: random_category_id,
+        subcategory_id: random_subcategory_id,
         user_id: users_id[user_index],
       },
     });
   });
+}
+
+async function createBranches(quantity: number) {
+  await Promise.all(
+    Array.from({ length: quantity }).map(async () => {
+      const branchName = faker.address.cityName();
+
+      const branch = await prisma.branch.create({
+        data: {
+          name: branchName,
+        },
+      });
+
+      branches_id.push(branch);
+    })
+  );
 }
 
 async function createUsers(quantity: number) {
@@ -95,6 +122,7 @@ async function createUsers(quantity: number) {
     name: faker.name.fullName(),
     password: faker.internet.password(),
     username: faker.internet.userName(),
+    branch_id: branches_id[Math.floor(Math.random() * branches_id.length)].id,
   }));
 
   await prisma.user.createMany({ data: userData });
@@ -115,6 +143,8 @@ async function createUsers(quantity: number) {
     },
   });
   const serviceEmail = faker.internet.email();
+  const branch_id =
+    branches_id[Math.floor(Math.random() * branches_id.length)].id;
   const service = await prisma.user.upsert({
     where: { email: serviceEmail },
     update: {},
@@ -124,12 +154,14 @@ async function createUsers(quantity: number) {
       password: await hash("service", 8),
       username: "user.service",
       role: "SERVICE",
+      branch_id,
     },
   });
   console.log({ admin, service });
 }
 
 export async function create() {
+  await createBranches(5);
   await createCategories();
   await createUsers(20);
   await createTickets(25);
