@@ -14,43 +14,161 @@ const categories = [
   {
     name: "Internet",
     subcategories: [
-      { name: "Rede cabeada" },
-      { name: "WiFi" },
-      { name: "Site bloqueado" },
-      { name: "Lentidão" },
+      {
+        name: "Rede cabeada",
+        titles: [
+          "Sem acesso à rede",
+          "Problemas na conexão cabeada",
+          "Lentidão na rede cabeada",
+        ],
+      },
+      {
+        name: "WiFi",
+        titles: [
+          "Sem acesso ao WiFi",
+          "Senha incorreta",
+          "Problemas de sinal WiFi",
+          "Lentidão do WiFi",
+        ],
+      },
+      {
+        name: "Site bloqueado",
+        titles: [
+          "Site inacessível",
+          "Erro de acesso ao site",
+          "Site bloqueado pelo firewall",
+        ],
+      },
+      {
+        name: "Lentidão",
+        titles: [
+          "Navegação lenta na internet",
+          "Lentidão geral da internet",
+          "Problemas com a velocidade da internet",
+        ],
+      },
     ],
   },
   {
     name: "Equipamento",
     subcategories: [
-      { name: "Notebook" },
-      { name: "Desktop" },
-      { name: "Mouse" },
-      { name: "Teclado" },
-      { name: "Fone de Ouvido" },
+      {
+        name: "Notebook",
+        titles: ["Notebook não liga", "Tela preta", "Problemas de hardware"],
+      },
+      {
+        name: "Desktop",
+        titles: [
+          "Desktop não liga",
+          "Problemas de hardware",
+          "Erro de sistema operacional",
+        ],
+      },
+      {
+        name: "Mouse",
+        titles: [
+          "Mouse não funciona",
+          "Cliques errados",
+          "Desconfiguração do mouse",
+        ],
+      },
+      {
+        name: "Teclado",
+        titles: [
+          "Teclado não funciona",
+          "Teclas travadas",
+          "Desconfiguração do teclado",
+        ],
+      },
+      {
+        name: "Fone de Ouvido",
+        titles: [
+          "Sem som",
+          "Mau funcionamento do microfone",
+          "Problemas com conexão Bluetooth",
+        ],
+      },
     ],
   },
   {
     name: "Software",
     subcategories: [
-      { name: "LibreOffice" },
-      { name: "Navegador de Internet" },
-      { name: "Skype" },
-      { name: "Microsoft Teams" },
-      { name: "Sistema Financeiro" },
+      {
+        name: "LibreOffice",
+        titles: [
+          "Erro de instalação",
+          "Problemas na abertura de arquivos",
+          "Crashes frequentes",
+        ],
+      },
+      {
+        name: "Navegador de Internet",
+        titles: [
+          "Erro de navegação",
+          "Problemas com extensões",
+          "Problemas de segurança",
+        ],
+      },
+      {
+        name: "Skype",
+        titles: [
+          "Sem conexão",
+          "Problemas com a qualidade de áudio/vídeo",
+          "Crashes frequentes",
+        ],
+      },
+      {
+        name: "Microsoft Teams",
+        titles: [
+          "Sem conexão",
+          "Problemas com a qualidade de áudio/vídeo",
+          "Crashes frequentes",
+        ],
+      },
+      {
+        name: "Sistema Financeiro",
+        titles: [
+          "Erro de processamento",
+          "Acesso negado",
+          "Relatórios incorretos",
+        ],
+      },
     ],
   },
   {
     name: "Usuários",
     subcategories: [
-      { name: "Criar Usuário" },
-      { name: "Reset de senha" },
-      { name: "Trocar de unidade" },
+      {
+        name: "Criar Usuário",
+        titles: [
+          "Criação de usuário com erro",
+          "Problemas na autenticação do usuário",
+          "Permissões de acesso incorretas",
+        ],
+      },
+      {
+        name: "Reset de senha",
+        titles: [
+          "Senha não resetada",
+          "Erro no reset de senha",
+          "Problemas de autenticação",
+        ],
+      },
+      {
+        name: "Trocar de unidade",
+        titles: [
+          "Erro na mudança de unidade",
+          "Problemas de acesso à nova unidade",
+          "Permissões de acesso incorretas",
+        ],
+      },
     ],
   },
 ];
 
-const categories_id: (Category & { subcategories: SubCategory[] })[] = [];
+const categories_id: (Category & {
+  subcategories: SubCategory[];
+})[] = [];
 const users_id: string[] = [];
 const branches_id: Branch[] = [];
 
@@ -83,17 +201,15 @@ async function createTickets(quantity: number) {
     const user_index = Math.floor(Math.random() * users_id.length);
 
     const random_category = categories_id[category_index];
-    const random_category_id = random_category.id;
-    const random_subcategory_id =
-      random_category.subcategories[subcategory_index].id;
+    const random_subcategory = random_category.subcategories[subcategory_index];
 
     await prisma.ticket.create({
       data: {
         description: faker.lorem.paragraphs(),
         phone: faker.phone.number(),
         title: faker.hacker.phrase(),
-        category_id: random_category_id,
-        subcategory_id: random_subcategory_id,
+        category_id: random_category.id,
+        subcategory_id: random_subcategory.id,
         user_id: users_id[user_index],
       },
     });

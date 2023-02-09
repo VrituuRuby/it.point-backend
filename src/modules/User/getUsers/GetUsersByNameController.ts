@@ -10,7 +10,6 @@ class GetUsersByNameController {
 
     const { name } = getUserName.parse(req.query);
 
-    if (!name) return res.send([]);
     const getUserByNameService = new GetUsersByNameService();
 
     const users = await getUserByNameService.execute({ name });
