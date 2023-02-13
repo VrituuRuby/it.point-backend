@@ -19,6 +19,19 @@ class GetTicketByIdService {
         },
         category: true,
         subcategory: true,
+        notes: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            created_at: "desc",
+          },
+        },
       },
     });
 

@@ -4,6 +4,14 @@ import prisma from "../../../database/prisma";
 class ListTicketsService {
   async execute(): Promise<Ticket[]> {
     const tickets = await prisma.ticket.findMany({
+      orderBy: {
+        id: "asc",
+      },
+      where: {
+        status: {
+          not: "CLOSED",
+        },
+      },
       include: {
         category: true,
         subcategory: true,
