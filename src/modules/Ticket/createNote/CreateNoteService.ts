@@ -25,6 +25,14 @@ class CreateNoteService {
         status,
         isPublic,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
     });
 
     await prisma.ticket.update({
