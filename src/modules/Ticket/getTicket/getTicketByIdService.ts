@@ -6,6 +6,7 @@ class GetTicketByIdService {
     const ticket = await prisma.ticket.findUnique({
       where: { id },
       include: {
+        branch: true,
         user: {
           select: {
             branch: true,

@@ -40,9 +40,10 @@ model User {
 }
 
 model Branch {
-  id    String @id @default(uuid())
-  users User[]
-  name  String
+  id     String   @id @default(uuid())
+  users  User[]
+  name   String
+  Ticket Ticket[]
 
   @@map("branches")
 }
@@ -51,6 +52,9 @@ model Ticket {
   id             Int         @id @default(autoincrement())
   status         Status      @default(OPEN)
   user           User        @relation(fields: [user_id], references: [id])
+  branch         Branch?     @relation(fields: [branch_id], references: [id])
+  branch_id      String?
+  email          String?
   user_id        String
   title          String
   description    String

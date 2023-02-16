@@ -6,6 +6,8 @@ class CreateTicketController {
   async handle(req: Request, res: Response) {
     const getTicketData = z.object({
       title: z.string(),
+      email: z.string().nullable(),
+      branch_id: z.string().nullable(),
       description: z.string(),
       phone: z.string(),
       category_id: z.string().uuid(),
