@@ -21,9 +21,10 @@ class UpdateCategoryService {
       data: {
         name,
         subcategories: {
-          update: subcategories.map((sub) => ({
+          upsert: subcategories.map((sub) => ({
             where: { id: sub.id },
-            data: { name: sub.name },
+            update: { name: sub.name },
+            create: { name: sub.name },
           })),
         },
       },
