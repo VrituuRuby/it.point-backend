@@ -59,9 +59,9 @@ model Ticket {
   title          String
   description    String
   phone          String
-  category       Category    @relation(fields: [category_id], references: [id])
+  category       Category    @relation(fields: [category_id], references: [id], onDelete: Cascade) 
   category_id    String
-  subcategory    SubCategory @relation(fields: [subcategory_id], references: [id])
+  subcategory    SubCategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
   subcategory_id String
   created_at     DateTime    @default(now())
   updated_at     DateTime?
