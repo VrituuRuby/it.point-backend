@@ -18,6 +18,6 @@ categoriesRoutes.post(
 );
 categoriesRoutes.get("/", listCategoriesController.handle);
 categoriesRoutes.patch("/update", updateCategoryController.handle);
-categoriesRoutes.delete("/delte/:id", deleteCategoryController.handle);
+categoriesRoutes.delete("/delete/:id", deleteCategoryController.handle);
 
 export { categoriesRoutes };
