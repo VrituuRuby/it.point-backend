@@ -11,16 +11,16 @@ const createCategoryController = new CreateCategoryController();
 const listCategoriesController = new ListcategoriesController();
 const updateCategoryController = new UpdateCategoryController();
 const deleteCategoryController = new DeleteCategoryController();
-const createSubcategoryControler = new CreateSubcategoryController();
+const createSubcategoryController = new CreateSubcategoryController();
 
+categoriesRoutes.get("/", listCategoriesController.handle);
 categoriesRoutes.post(
   "/create",
   verifyAuthentication,
   createCategoryController.handle
 );
-categoriesRoutes.post("/:id/create", createSubcategoryControler.handle);
-categoriesRoutes.get("/", listCategoriesController.handle);
 categoriesRoutes.patch("/update", updateCategoryController.handle);
 categoriesRoutes.delete("/delete/:id", deleteCategoryController.handle);
+categoriesRoutes.post("/:id/create", createSubcategoryController.handle);
 
 export { categoriesRoutes };
