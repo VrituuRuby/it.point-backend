@@ -9,8 +9,10 @@ interface ICreateCategory {
 
 class CreateSubcategoryService {
   async execute({ name, id }: ICreateCategory): Promise<SubCategory> {
-    const categoryExists = await prisma.category.findUnique({ where: { id } });
-    if (!categoryExists) throw new AppError("Category doesn't exist");
+    const categoryExists = await prisma.subCategory.findUnique({
+      where: { id },
+    });
+    if (!categoryExists) throw new AppError("Subcategory doesn't exist");
 
     const subcategory = await prisma.subCategory.create({
       data: {
