@@ -98,7 +98,7 @@ model SubCategory {
   name        String
   category_id String
   tickets     Ticket[]
-  category    Category @relation(fields: [category_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
 
   @@map("sub_categories")
 }

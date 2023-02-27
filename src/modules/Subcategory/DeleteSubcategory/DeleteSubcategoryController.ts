@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { DeleteCategoryService } from "../../Category/DeleteCategory/DeleteCategoryService";
+import { DeleteSubcategoryService } from "./DeleteSubcategoryService";
 
 class DeleteSubcategoryController {
   async handle(req: Request, res: Response): Promise<Response> {
@@ -9,7 +9,7 @@ class DeleteSubcategoryController {
     });
 
     const { id } = getRequestData.parse(req.params);
-    const deleteSubcategoryService = new DeleteCategoryService();
+    const deleteSubcategoryService = new DeleteSubcategoryService();
 
     await deleteSubcategoryService.execute(id);
 
