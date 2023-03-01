@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { verifyAuthentication } from "../middleware/verifyAuthentication";
+import { verifyService } from "../middleware/verifyService";
 import { CreateCategoryController } from "../modules/Category/CreateCategory/CreateCategoryController";
 import { DeleteCategoryController } from "../modules/Category/DeleteCategory/DeleteCategoryController";
 import { ListcategoriesController } from "../modules/Category/ListCategories/ListCategoriesContoller";
@@ -12,6 +13,7 @@ const updateCategoryController = new UpdateCategoryController();
 const deleteCategoryController = new DeleteCategoryController();
 
 categoriesRoutes.get("/", listCategoriesController.handle);
+categoriesRoutes.use(verifyAuthentication, verifyService);
 categoriesRoutes.post(
   "/create",
   verifyAuthentication,

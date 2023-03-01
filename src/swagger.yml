@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: IT.POINT Documentation
+  description: This is the backend api to it.point ticket manager system.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3333/api
+paths:
+  /branches/create:
+    post:
+      tags:
+        - Branch
+      summary: Create a Branch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: Curitiba
+      responses:
+        "201":
+          description: New branch data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Curitiba
+
+                  id:
+                    type: string
+                    example: 5566300c-0966-4f83-9144-a711782eb640
+        "400":
+          description: Bad request branch already exists.
+        default:
+          description: Unexpected error
+  /branches:
+    get:
+      tags:
+        - Branch
+      summary: Lists all existing branches
+      responses:
+        "200":
+          description: Branches data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    id:
+                      type: string
+  /session:
+    post:
+      tags:
+        - Authentication
+      summary: Logs in with username and password
+      description: Log in with username and password returns user data and it's Json Web Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+
+                password:
+                  type: string
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: Bilbo Baggins
+                      email:
+                        type: string
+                        example: bilbo.baggins@mail.com
+                      username:
+                        type: string
+                        example: barrel.rider123
+                      role:
+                        type: string
+                        example: ADMIN
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDM4NDYwNC01ODEzLTRhZjEtYTcyNy02MzdhNmM3NDU5MjgiLCJuYW1lIjoiQmlsYm8gQmFnZ2lucyIsImVtYWlsIjoiYmlsYm8uYmFnZ2luc0BtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFycmVsLnJpZGVyMTIzIiwicm9sZSI6IkFETUlOIn0.gEceLHJ9Eps5mhH0rQ6GtiELnlfr21tNBw6o81g1xUc
+          description: Success
+        403:
+          description: Unauthorized. Wrong username or password
+  /categories:
+    get:
+      summary: Lists all existing categories
+      tags:
+        - Category
+      responses:
+        200:
+          description: Array that lists all existing categories with their subcategories in ascending order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Hardware
+                    id:
+                      type: string
+                      example: d1a5aff9-590b-4847-bdae-12abb28cab8a
+                    subcategories:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: Desktop
+                          id:
+                            type: string
+                            example: c7792ee1-fdc6-42b1-a365-f3df1dfcecfb
+  /categories/creates:
+    post:
+      summary: Creates a new category
+      tags:
+        - Category
+      description: Create a new category with subcategories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Internet
+                id:
+                  type: string
+                  example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                subcategories:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: WiFi
+                      id:
+                        type: string
+                        example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+      responses:
+        200:
+          description: Created new category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Internet
+                  id:
+                    type: string
+                    example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                  subcategories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: WiFi
+                        id:
+                          type: string
+                          example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+  /categories/delete/{categoryId}:
+    delete:
+      tags:
+        - Category
+      summary: Deletes a category by id
+      parameters:
+        - name: categoryId
+          int: path
+          required: true
+          description: Category id that will be deleted
+          schema:
+            type: string
+            format: uuid
