@@ -5,12 +5,14 @@ import { CreateNoteController } from "../modules/Ticket/createNote/CreateNoteCon
 import { CreateTicketController } from "../modules/Ticket/createTicket/CreateTicketController";
 import { GetTicketByIdController } from "../modules/Ticket/getTicket/getTicketByIdController";
 import { ListTicketsController } from "../modules/Ticket/listTickets/ListTicketsController";
+import { ListTicketsByUserIdController } from "../modules/Ticket/listTicketsByUserId/ListTicketsByUserIdController";
 
 const ticketsRoutes = Router();
 const createTicketController = new CreateTicketController();
 const listTicketsController = new ListTicketsController();
 const getTicketByIdController = new GetTicketByIdController();
 const createNoteController = new CreateNoteController();
+const listTicketsByUserIdController = new ListTicketsByUserIdController();
 
 ticketsRoutes.post("/create", createTicketController.handle);
 ticketsRoutes.get(
@@ -20,9 +22,14 @@ ticketsRoutes.get(
   listTicketsController.handle
 );
 ticketsRoutes.get(
-  "/:id_string",
+  "/single/:id_string",
   verifyAuthentication,
   getTicketByIdController.handle
+);
+ticketsRoutes.get(
+  "/user/",
+  verifyAuthentication,
+  listTicketsByUserIdController.handle
 );
 ticketsRoutes.post(
   "/:id/notes/create",

@@ -278,6 +278,17 @@ async function createUsers(quantity: number) {
     },
   });
 
+  const user = await prisma.user.upsert({
+    where: { email: "user@user.com" },
+    update: {},
+    create: {
+      email: "user@user.com",
+      name: faker.name.fullName(),
+      password: await hash("user", 8),
+      username: "user.user",
+    },
+  });
+
   const serviceEmail = faker.internet.email();
   const branch_id =
     branches_id[Math.floor(Math.random() * branches_id.length)].id;
