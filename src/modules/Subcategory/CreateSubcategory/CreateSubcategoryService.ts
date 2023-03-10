@@ -12,7 +12,7 @@ class CreateSubcategoryService {
     const categoryExists = await prisma.category.findUnique({
       where: { id },
     });
-    if (!categoryExists) throw new AppError("Category doesn't exist");
+    if (!categoryExists) throw new AppError("Category doesn't exist", 404);
 
     const subcategory = await prisma.subCategory.create({
       data: {

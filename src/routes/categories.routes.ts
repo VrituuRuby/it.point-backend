@@ -14,11 +14,7 @@ const deleteCategoryController = new DeleteCategoryController();
 
 categoriesRoutes.get("/", listCategoriesController.handle);
 categoriesRoutes.use(verifyAuthentication, verifyService);
-categoriesRoutes.post(
-  "/create",
-  verifyAuthentication,
-  createCategoryController.handle
-);
+categoriesRoutes.post("/create", createCategoryController.handle);
 categoriesRoutes.patch("/update", updateCategoryController.handle);
 categoriesRoutes.delete("/delete/:id", deleteCategoryController.handle);
 

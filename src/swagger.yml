@@ -5,6 +5,12 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:3333/api
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
   /branches/create:
     post:
@@ -140,6 +146,8 @@ paths:
                             example: c7792ee1-fdc6-42b1-a365-f3df1dfcecfb
   /categories/creates:
     post:
+      security:
+        - bearerAuth: []
       summary: Creates a new category
       tags:
         - Category
@@ -193,8 +201,68 @@ paths:
                         id:
                           type: string
                           example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+  /categories/update:
+    patch:
+      security:
+        - bearerAuth: []
+      tags:
+        - Category
+      summary: Updates a category and its subcategories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 164f48f8-d6fa-4aaa-a788-a998e938b877
+                name:
+                  type: string
+                  example: Hardware
+                subcategories:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 037566e1-ddbe-476b-af4c-ded664a9a8eb
+                      name:
+                        type: string
+                        example: Desktop
+      responses:
+        201:
+          description: Category updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Internet
+                  id:
+                    type: string
+                    example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                  subcategories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: WiFi
+                        id:
+                          type: string
+                          example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+        404:
+          description: Category doesn't exists
   /categories/delete/{categoryId}:
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - Category
       summary: Deletes a category by id
@@ -206,3 +274,194 @@ paths:
           schema:
             type: string
             format: uuid
+      responses:
+        "204":
+          description: Category deleted
+        "404":
+          description: Category doesn't exists
+  /subcategories/create:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Category
+        - Subcategory
+      description: Create a new subcategory into the category_id in request body
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: string
+                  example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                name:
+                  type: string
+                  example: Internet
+      responses:
+        201:
+          description: created new subcategory
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                  category_id:
+                    type: string
+                    example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                  name:
+                    type: string
+                    example: Internet
+        404:
+          description: category doesn't exists
+  /subcategories/delete/{subcategory_id}:
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Category
+        - Subcategory
+      summary: Deletes a subcategory by id
+      description: Deletes a subcategory by id
+      parameters:
+      - name: categoryId
+        int: path
+        required: true
+      description: Category id that will be deleted
+      schema:
+        id:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Subcategory deleted
+        "404":
+          description: Subcategory doesn't exists
+  /tickets/create:
+    post:
+      tags:
+        - Ticket
+      summary: Creates a ticket
+      description: Creates and return a new ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                title:
+                  type: string
+                  example: I cant connect to the Wi-Fi
+                email:
+                  type: string
+                  example: bilbo.baggins@mail.com
+                branch_id:
+                  type: string
+                  example: 037566e1-ddbe-476b-af4c-ded664a9a8eb
+                description:
+                  type: string
+                  example: Wi-Fi keeps disconnecting me
+                phone:
+                  type: string
+                  example: (398) 827-2330
+                category_id:
+                  type: string
+                  example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                subcategory_id:
+                  type: string
+                  example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+                user_id:
+                  type: string
+                  example: b8e9ddde-d40d-47da-b267-941915b641d3
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  title:
+                    type: string
+                    example: I cant connect to the Wi-Fi
+                  email:
+                    type: string
+                    example: bilbo.baggins@mail.com
+                  branch_id:
+                    type: string
+                    example: 037566e1-ddbe-476b-af4c-ded664a9a8eb
+                  description:
+                    type: string
+                    example: Wi-Fi keeps disconnecting me
+                  phone:
+                    type: string
+                    example: (398) 827-2330
+                  category_id:
+                    type: string
+                    example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                  category: 
+                    type: object
+                    properties:
+                      name: 
+                        type: string
+                        example: Internet
+                      id: 
+                        type: string
+                        example: a9d888ad-f09f-4e9f-b9a9-d814685069c9
+                  subcategory_id:
+                    type: string
+                    example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+                  subcategory: 
+                    type: object
+                    properties:
+                      name: 
+                        type: string
+                        example: Wi-Fi
+                      id: 
+                        type: string
+                        example: c0507601-29e7-4759-8c4a-22bcb9d3d74c
+                  branch:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: Curitiba
+                      id: 
+                        type: string
+                        example: 48f08ad3-59f6-4dfe-8698-0e3e04e3aed6
+                  user_id:
+                    type: string
+                    example: b8e9ddde-d40d-47da-b267-941915b641d3
+                  user:
+                    type: object
+                    properties:
+                      branch:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: Curitiba
+                          id: 
+                            type: string
+                            example: 48f08ad3-59f6-4dfe-8698-0e3e04e3aed6
+                      branch_id:
+                        type: string
+                        example: 48f08ad3-59f6-4dfe-8698-0e3e04e3aed6
+                      email:
+                        type: string
+                        example: bilbo.baggins@mail.com
+                      name:
+                        type: string
+                        example: Bilbo Baggins
+                      id: 
+                        type: string
+                        example: 7aaab581-1bb7-44bf-97c1-a85ab64ed4bc
+                      username:
+                        type: string
+                        example: bilbo.baggins123
+      

@@ -1,8 +1,16 @@
 import { AppError } from "../../../config/AppError";
 import prisma from "../../../database/prisma";
 
+interface IRequest {
+  id: number;
+  user: {
+    id: string;
+    role: "ADMIN" | "SERVICE" | "USER";
+  };
+}
+
 class GetTicketByIdService {
-  async execute(id: number) {
+  async execute({ id, user }: IRequest) {
     const ticket = await prisma.ticket.findUnique({
       where: { id },
       include: {
@@ -37,6 +45,8 @@ class GetTicketByIdService {
     });
 
     if (!ticket) throw new AppError("Ticket doesn't exists");
+    if (user.role === "USER" && user.id !== ticket.user_id)
+      throw new AppError("User is not allowed");
 
     return ticket;
   }

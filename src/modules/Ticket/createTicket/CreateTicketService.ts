@@ -9,14 +9,14 @@ interface CreateTicketDTO {
   phone: string;
   category_id: string;
   subcategory_id: string;
-  branch_id?: string | null,
-  email?: string | null,
+  branch_id?: string | null;
+  email?: string | null;
 }
 class CreateTicketService {
   async execute({
     category_id,
     description,
-    email, 
+    email,
     branch_id,
     phone,
     subcategory_id,

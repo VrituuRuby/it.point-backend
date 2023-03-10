@@ -252,13 +252,15 @@ async function createBranches(quantity: number) {
 }
 
 async function createUsers(quantity: number) {
-  const userData = Array.from({ length: quantity }).map(() => ({
-    email: faker.internet.email(),
-    name: faker.name.fullName(),
-    password: faker.internet.password(),
-    username: faker.internet.userName(),
-    branch_id: branches_id[Math.floor(Math.random() * branches_id.length)].id,
-  }));
+  const userData = await Promise.all(
+    Array.from({ length: quantity }).map(async () => ({
+      email: faker.internet.email(),
+      name: faker.name.fullName(),
+      password: await hash("password", 8),
+      username: faker.internet.userName(),
+      branch_id: branches_id[Math.floor(Math.random() * branches_id.length)].id,
+    }))
+  );
 
   await prisma.user.createMany({ data: userData });
 
@@ -304,7 +306,7 @@ async function createUsers(quantity: number) {
       branch_id,
     },
   });
-  console.log({ admin, service });
+  console.log({ admin, service, user });
 }
 
 export async function create() {
